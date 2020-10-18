@@ -48,5 +48,19 @@ genderNet=cv2.dnn.readNet(genderModel,genderProto)
 video=cv2.VideoCapture(args.image if args.image else 0)
 padding=20
 
-   
+while cv2.waitKey(1)<0:
+    hasFrame,frame=video.read()
+    if not hasFrame:
+        cv2.waitKey()
+        break
+
+    resultImg,faceBoxes=highlightFace(faceNet,frame)
+    if not faceBoxes:
+        print("No face detected")
+         for faceBox in faceBoxes:
+        face=frame[max(0,faceBox[1]-padding):
+                   min(faceBox[3]+padding,frame.shape[0]-1),max(0,faceBox[0]-padding)
+                   :min(faceBox[2]+padding, frame.shape[1]-1)]
+
+        blob=cv2.dnn.blobFromImage(face, 1.0)
 
